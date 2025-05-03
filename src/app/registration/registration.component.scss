@@ -1,0 +1,36 @@
+.center-stepper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+.field-card {
+  width: 100%;
+  max-width: 900px;
+  margin-bottom: 20px;
+  padding: 15px;
+  box-sizing: border-box;
+  border: 1px solid #ccc;
+}
+
+mat-form-field {
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+button.mat-raised-button {
+  margin-top: 20px;
+  width: 100%;
+}
+.form-title {
+  text-align: center;
+  font-size: 24px;
+  margin-bottom: 24px;
+  font-weight: 600;
+}
+.stepper-buttons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
