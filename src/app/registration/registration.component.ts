@@ -17,6 +17,7 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatCardModule } from '@angular/material/card';
 import { RegistrationService } from '../services/registration.service';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-registration',
@@ -34,6 +35,7 @@ import { RegistrationService } from '../services/registration.service';
     MatNativeDateModule,
     MatCheckboxModule,
     MatCardModule,
+    MatSnackBarModule,
   ],
   templateUrl: './registration.component.html',
   styleUrls: ['./registration.component.scss'],
@@ -48,7 +50,8 @@ export class RegistrationComponent {
 
   constructor(
     private fb: FormBuilder,
-    private registrationService: RegistrationService
+    private registrationService: RegistrationService,
+    private snackBar: MatSnackBar
   ) {
     this.personalInfoForm = this.fb.group({
       first_name: ['', Validators.required],
@@ -106,7 +109,7 @@ export class RegistrationComponent {
     }
   }
 
-  submitForm(): void {
+  submitForm(stepper: any): void {
     if (this.formsAreValid()) {
       const formData = new FormData();
 
@@ -129,8 +132,28 @@ export class RegistrationComponent {
       }
 
       this.registrationService.submitRegistration(formData).subscribe(
-        (response) => console.log('Registration successful', response),
-        (error) => console.error('Registration failed', error)
+        (response) => {
+          this.snackBar.open('Registration successful!', 'Close', {
+            duration: 3000,
+            verticalPosition: 'top',
+          });
+
+          this.personalInfoForm.reset();
+          this.documentForm.reset();
+          this.addressForm.reset();
+          this.businessForm.reset();
+          this.fileUploadForm.reset();
+          this.paymentForm.reset();
+
+          stepper.reset();
+        },
+        (error) => {
+          this.snackBar.open('Registration failed. Try again.', 'Close', {
+            duration: 3000,
+            verticalPosition: 'top',
+          });
+          console.error('Registration failed', error);
+        }
       );
     }
   }
