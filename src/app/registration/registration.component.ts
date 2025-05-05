@@ -18,6 +18,11 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatCardModule } from '@angular/material/card';
 import { RegistrationService } from '../services/registration.service';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { ViewChild } from '@angular/core';
+import { MatStepper } from '@angular/material/stepper';
+
+
+
 
 @Component({
   selector: 'app-registration',
@@ -35,7 +40,7 @@ import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
     MatNativeDateModule,
     MatCheckboxModule,
     MatCardModule,
-    MatSnackBarModule,
+    MatSnackBarModule
   ],
   templateUrl: './registration.component.html',
   styleUrls: ['./registration.component.scss'],
@@ -47,7 +52,7 @@ export class RegistrationComponent {
   businessForm: FormGroup;
   fileUploadForm: FormGroup;
   paymentForm: FormGroup;
-
+  @ViewChild('stepper') stepper!: MatStepper;
   constructor(
     private fb: FormBuilder,
     private registrationService: RegistrationService,
@@ -136,21 +141,24 @@ export class RegistrationComponent {
           this.snackBar.open('Registration successful!', 'Close', {
             duration: 3000,
             verticalPosition: 'top',
+            panelClass: ['snackbar-success']
           });
-
+  
           this.personalInfoForm.reset();
           this.documentForm.reset();
           this.addressForm.reset();
           this.businessForm.reset();
           this.fileUploadForm.reset();
           this.paymentForm.reset();
-
-          stepper.reset();
+  
+       
+         
         },
         (error) => {
           this.snackBar.open('Registration failed. Try again.', 'Close', {
             duration: 3000,
             verticalPosition: 'top',
+            panelClass: ['snackbar-error']
           });
           console.error('Registration failed', error);
         }

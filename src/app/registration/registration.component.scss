@@ -34,3 +34,12 @@ button.mat-raised-button {
   justify-content: space-between;
   margin-top: 20px;
 }
+::ng-deep .snackbar-success {
+  background-color: #4caf50;
+  color: white;
+}
+
+::ng-deep .snackbar-error {
+  background-color: #f44336;
+  color: white;
+}
