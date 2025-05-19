@@ -1,226 +1,256 @@
-<div class="registration-container p-4">
-  <h2 class="form-title">Registration Form</h2>
-</div>
-<mat-horizontal-stepper #stepper linear class="center-stepper">
-  <!-- Step 1: Personal Info -->
-  <mat-step [stepControl]="personalInfoForm">
-    <form [formGroup]="personalInfoForm">
-      <ng-template matStepLabel>Personal Info</ng-template>
+<mat-horizontal-stepper [linear]="true" #stepper>
+  <!-- Step 1: Aadhaar Info -->
+  <mat-step [stepControl]="aadhaarForm">
+    <form [formGroup]="aadhaarForm">
+      <ng-template matStepLabel>Aadhaar Details</ng-template>
 
-      <mat-card class="field-card">
-        <mat-form-field appearance="fill" class="full-width">
-          <mat-label>First Name</mat-label>
-          <input matInput formControlName="first_name" />
-        </mat-form-field>
-      </mat-card>
-
-      <mat-card class="field-card">
-        <mat-form-field appearance="fill" class="full-width">
-          <mat-label>Middle Name</mat-label>
-          <input matInput formControlName="middle_name" />
-        </mat-form-field>
-      </mat-card>
-
-      <mat-card class="field-card">
-        <mat-form-field appearance="fill" class="full-width">
-          <mat-label>Last Name</mat-label>
-          <input matInput formControlName="last_name" />
-        </mat-form-field>
-      </mat-card>
-
-      <mat-card class="field-card">
-        <mat-form-field appearance="fill" class="full-width">
-          <mat-label>Father Name</mat-label>
-          <input matInput formControlName="father_name" />
-        </mat-form-field>
-      </mat-card>
-
-      <mat-card class="field-card">
-        <mat-form-field appearance="fill" class="full-width">
-          <mat-label>Gender</mat-label>
-          <mat-select formControlName="gender">
-            <mat-option value="male">Male</mat-option>
-            <mat-option value="female">Female</mat-option>
-            <mat-option value="other">Other</mat-option>
-          </mat-select>
-        </mat-form-field>
-      </mat-card>
-
-      <mat-card class="field-card">
-        <mat-form-field appearance="fill" class="full-width">
-          <mat-label>Date of Birth</mat-label>
-          <input matInput [matDatepicker]="picker1" formControlName="dob" />
-          <mat-datepicker-toggle
-            matSuffix
-            [for]="picker1"
-          ></mat-datepicker-toggle>
-          <mat-datepicker #picker1></mat-datepicker>
-        </mat-form-field>
-      </mat-card>
-
-      <mat-card class="field-card">
-        <mat-form-field appearance="fill" class="full-width">
-          <mat-label>Nationality</mat-label>
-          <input matInput formControlName="nationality" />
-        </mat-form-field>
-      </mat-card>
-      <div class="text-end">
-        <button
-          class="btn w-25"
-          mat-raised-button
-          color="primary"
-          matStepperNext
+      <mat-form-field appearance="fill" class="full-width">
+        <mat-label>Aadhaar Number</mat-label>
+        <input
+          matInput
+          formControlName="aadhaar_number"
+          maxlength="12"
+          autocomplete="off"
+          placeholder="Enter 12-digit Aadhaar number"
+        />
+        <mat-error
+          *ngIf="aadhaarForm.get('aadhaar_number')?.hasError('required')"
         >
+          Aadhaar Number is required
+        </mat-error>
+        <mat-error
+          *ngIf="aadhaarForm.get('aadhaar_number')?.hasError('pattern')"
+        >
+          Must be a valid 12-digit number
+        </mat-error>
+      </mat-form-field>
+
+      <mat-card>
+        <mat-label>Aadhaar Card File (Image or PDF)</mat-label>
+        <input
+          type="file"
+          (change)="onAadhaarFileChange($event)"
+          accept="image/*,application/pdf"
+        />
+        <mat-error
+          *ngIf="aadhaarForm.get('aadhaar_file')?.hasError('required')"
+        >
+          Aadhaar file is required
+        </mat-error>
+      </mat-card>
+
+      <div class="step-actions">
+        <button mat-raised-button color="primary" (click)="stepper.next()">
           Next
         </button>
       </div>
     </form>
   </mat-step>
 
-  <!-- Step 2: Document -->
+  <!-- Step 2: Personal Info -->
+  <mat-step [stepControl]="personalInfoForm">
+    <form [formGroup]="personalInfoForm">
+      <ng-template matStepLabel>Personal Information</ng-template>
+
+      <mat-form-field appearance="fill" class="full-width">
+        <mat-label>First Name</mat-label>
+        <input matInput formControlName="first_name" />
+        <mat-error
+          *ngIf="personalInfoForm.get('first_name')?.hasError('required')"
+        >
+          First Name is required
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill" class="full-width">
+        <mat-label>Middle Name</mat-label>
+        <input matInput formControlName="middle_name" />
+        <mat-error
+          *ngIf="personalInfoForm.get('middle_name')?.hasError('required')"
+        >
+          Middle Name is required
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill" class="full-width">
+        <mat-label>Last Name</mat-label>
+        <input matInput formControlName="last_name" />
+        <mat-error
+          *ngIf="personalInfoForm.get('last_name')?.hasError('required')"
+        >
+          Last Name is required
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill" class="full-width">
+        <mat-label>Father's Name</mat-label>
+        <input matInput formControlName="father_name" />
+        <mat-error
+          *ngIf="personalInfoForm.get('father_name')?.hasError('required')"
+        >
+          Father's Name is required
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill" class="full-width">
+        <mat-label>Gender</mat-label>
+        <mat-select formControlName="gender">
+          <mat-option value="Male">Male</mat-option>
+          <mat-option value="Female">Female</mat-option>
+          <mat-option value="Other">Other</mat-option>
+        </mat-select>
+        <mat-error *ngIf="personalInfoForm.get('gender')?.hasError('required')">
+          Gender is required
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill" class="full-width">
+        <mat-label>Date of Birth</mat-label>
+        <input matInput [matDatepicker]="picker" formControlName="dob" />
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+        <mat-error *ngIf="personalInfoForm.get('dob')?.hasError('required')">
+          Date of Birth is required
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill" class="full-width">
+        <mat-label>Nationality</mat-label>
+        <input matInput formControlName="nationality" />
+        <mat-error
+          *ngIf="personalInfoForm.get('nationality')?.hasError('required')"
+        >
+          Nationality is required
+        </mat-error>
+      </mat-form-field>
+      <div class="step-actions">
+        <button mat-button matStepperPrevious>Back</button>
+        <button mat-raised-button color="primary" (click)="stepper.next()">
+          Next
+        </button>
+      </div>
+    </form>
+  </mat-step>
+
+  <!-- Step 3: Documents -->
   <mat-step [stepControl]="documentForm">
     <form [formGroup]="documentForm">
       <ng-template matStepLabel>Documents</ng-template>
 
-      <mat-card class="field-card">
-        <mat-form-field class="full-width" appearance="fill">
-          <mat-label>PAN Number</mat-label>
-          <input matInput formControlName="pan_number" />
-        </mat-form-field>
-      </mat-card>
+      <mat-form-field appearance="fill">
+        <mat-label>PAN Number</mat-label>
+        <input matInput formControlName="pan_number" maxlength="10" />
+        <mat-error *ngIf="documentForm.get('pan_number')?.hasError('required')">
+          PAN is required
+        </mat-error>
+        <mat-error *ngIf="documentForm.get('pan_number')?.hasError('pattern')">
+          Invalid PAN format. E.g., APHPY6386B
+        </mat-error>
+      </mat-form-field>
 
-      <mat-card class="field-card">
-        <mat-form-field class="full-width" appearance="fill">
-          <mat-label>GST Number</mat-label>
-          <input matInput formControlName="gst_number" />
-        </mat-form-field>
-      </mat-card>
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>GST Number</mat-label>
+        <input matInput formControlName="gst_number" />
+      </mat-form-field>
 
-      <mat-card class="field-card">
-        <mat-form-field class="full-width" appearance="fill">
-          <mat-label>Aadhaar Number</mat-label>
-          <input matInput formControlName="aadhaar_number" />
-        </mat-form-field>
-      </mat-card>
-
-      <mat-card class="field-card">
-        <mat-form-field class="full-width" appearance="fill">
-          <mat-label>Education</mat-label>
-          <input matInput formControlName="education" />
-        </mat-form-field>
-      </mat-card>
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Education</mat-label>
+        <input matInput formControlName="education" />
+      </mat-form-field>
 
       <mat-card class="field-card">
         <label>Marksheet File:</label>
         <input type="file" (change)="onFileChange($event, 'marksheet_file')" />
       </mat-card>
-      <div class="stepper-buttons">
-        <button class="btn w-25" mat-button matStepperPrevious>Back</button>
-        <button
-          class="btn w-25"
-          mat-raised-button
-          color="primary"
-          matStepperNext
-        >
+
+      <div class="step-actions">
+        <button mat-button matStepperPrevious>Back</button>
+        <button mat-raised-button color="primary" (click)="stepper.next()">
           Next
         </button>
       </div>
     </form>
   </mat-step>
 
-  <!-- Step 3: Address -->
+  <!-- Step 4: Address -->
   <mat-step [stepControl]="addressForm">
     <form [formGroup]="addressForm">
       <ng-template matStepLabel>Address</ng-template>
 
-      <mat-card class="field-card">
-        <mat-form-field appearance="fill" class="full-width">
-          <mat-label>Residential Address</mat-label>
-          <input matInput formControlName="residential_address" />
-        </mat-form-field>
-      </mat-card>
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Residential Address</mat-label>
+        <textarea matInput formControlName="residential_address"></textarea>
+      </mat-form-field>
 
-      <mat-card class="field-card">
-        <mat-form-field appearance="fill" class="full-width">
-          <mat-label>Business Address</mat-label>
-          <input matInput formControlName="business_address" />
-        </mat-form-field>
-      </mat-card>
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Business Address</mat-label>
+        <textarea matInput formControlName="business_address"></textarea>
+      </mat-form-field>
 
-      <mat-card class="field-card">
-        <mat-form-field appearance="fill" class="full-width">
-          <mat-label>Alternate Contact</mat-label>
-          <input matInput formControlName="alt_contact" />
-        </mat-form-field>
-      </mat-card>
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Alternate Contact</mat-label>
+        <input matInput formControlName="alt_contact" />
+      </mat-form-field>
 
-      <mat-card class="field-card">
-        <mat-form-field appearance="fill" class="full-width">
-          <mat-label>Email</mat-label>
-          <input matInput formControlName="email" />
-        </mat-form-field>
-      </mat-card>
-      <div class="stepper-buttons">
-        <button  class="btn w-25" mat-button matStepperPrevious>Back</button>
-        <button  class="btn w-25" mat-raised-button color="primary" matStepperNext>Next</button>
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Email</mat-label>
+        <input matInput type="email" formControlName="email" />
+      </mat-form-field>
+
+      <div class="step-actions">
+        <button mat-button matStepperPrevious>Back</button>
+        <button mat-raised-button color="primary" (click)="stepper.next()">
+          Next
+        </button>
       </div>
     </form>
   </mat-step>
 
-  <!-- Step 4: Business -->
+  <!-- Step 5: Business -->
   <mat-step [stepControl]="businessForm">
     <form [formGroup]="businessForm">
       <ng-template matStepLabel>Business</ng-template>
 
-      <mat-card class="field-card">
-        <mat-form-field appearance="fill" class="full-width">
-          <mat-label>Local Reference</mat-label>
-          <input matInput formControlName="local_reference" />
-        </mat-form-field>
-      </mat-card>
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Local Reference</mat-label>
+        <input matInput formControlName="local_reference" />
+      </mat-form-field>
 
-      <mat-card class="field-card">
-        <mat-form-field appearance="fill" class="full-width">
-          <mat-label>Business Name</mat-label>
-          <input matInput formControlName="business_name" />
-        </mat-form-field>
-      </mat-card>
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Business Name</mat-label>
+        <input matInput formControlName="business_name" />
+      </mat-form-field>
 
-      <mat-card class="field-card">
-        <mat-form-field appearance="fill" class="full-width">
-          <mat-label>Circle</mat-label>
-          <input matInput formControlName="circle" />
-        </mat-form-field>
-      </mat-card>
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Circle</mat-label>
+        <input matInput formControlName="circle" />
+      </mat-form-field>
 
-      <mat-card class="field-card">
-        <mat-form-field appearance="fill" class="full-width">
-          <mat-label>SSA</mat-label>
-          <input matInput formControlName="ssa" />
-        </mat-form-field>
-      </mat-card>
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>SSA</mat-label>
+        <input matInput formControlName="ssa" />
+      </mat-form-field>
 
-      <mat-card class="field-card">
-        <mat-form-field appearance="fill" class="full-width">
-          <mat-label>Area</mat-label>
-          <input matInput formControlName="area" />
-        </mat-form-field>
-      </mat-card>
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Area</mat-label>
+        <input matInput formControlName="area" />
+      </mat-form-field>
 
-      <mat-card class="field-card">
-        <mat-form-field appearance="fill" class="full-width">
-          <mat-label>Zone</mat-label>
-          <input matInput formControlName="zone" />
-        </mat-form-field>
-      </mat-card>
-      <div class="stepper-buttons">
-        <button  class="btn w-25" mat-button matStepperPrevious>Back</button>
-        <button  class="btn w-25" mat-raised-button color="primary" matStepperNext>Next</button>
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Zone</mat-label>
+        <input matInput formControlName="zone" />
+      </mat-form-field>
+
+      <div class="step-actions">
+        <button mat-button matStepperPrevious>Back</button>
+        <button mat-raised-button color="primary" (click)="stepper.next()">
+          Next
+        </button>
       </div>
     </form>
   </mat-step>
 
-  <!-- Step 5: Files -->
+  <!-- Step 6: Other Files Upload -->
   <mat-step [stepControl]="fileUploadForm">
     <form [formGroup]="fileUploadForm">
       <ng-template matStepLabel>Upload Files</ng-template>
@@ -228,11 +258,6 @@
       <mat-card class="field-card">
         <label>PAN File:</label>
         <input type="file" (change)="onFileChange($event, 'pan_file')" />
-      </mat-card>
-
-      <mat-card class="field-card">
-        <label>Aadhaar File:</label>
-        <input type="file" (change)="onFileChange($event, 'aadhaar_file')" />
       </mat-card>
 
       <mat-card class="field-card">
@@ -244,41 +269,42 @@
         <label>Video File (optional):</label>
         <input type="file" (change)="onFileChange($event, 'video_file')" />
       </mat-card>
-      <div class="stepper-buttons">
-        <button  class="btn w-25" mat-button matStepperPrevious>Back</button>
-        <button  class="btn w-25" mat-raised-button color="primary" matStepperNext>Next</button>
+
+      <div class="step-actions">
+        <button mat-button matStepperPrevious>Back</button>
+        <button mat-raised-button color="primary" (click)="stepper.next()">
+          Next
+        </button>
       </div>
     </form>
   </mat-step>
 
-  <!-- Step 6: Payment -->
+  <!-- Step 7: Payment -->
   <mat-step [stepControl]="paymentForm">
     <form [formGroup]="paymentForm">
       <ng-template matStepLabel>Payment</ng-template>
 
-      <mat-card class="field-card">
-        <mat-form-field appearance="fill" class="full-width">
-          <mat-label>OTP</mat-label>
-          <input matInput formControlName="otp" />
-        </mat-form-field>
-      </mat-card>
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>OTP</mat-label>
+        <input matInput formControlName="otp" />
+      </mat-form-field>
 
-      <mat-card class="field-card">
-        <mat-form-field appearance="fill" class="full-width">
-          <mat-label>Security Deposit</mat-label>
-          <input matInput formControlName="security_deposit" />
-        </mat-form-field>
-      </mat-card>
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Security Deposit</mat-label>
+        <input matInput type="number" formControlName="security_deposit" />
+      </mat-form-field>
 
-      <mat-card class="field-card">
-        <mat-checkbox formControlName="notify" checked="true">
-          Notify
-        </mat-checkbox>
-      </mat-card>
-      <div class="stepper-buttons">
-        <button  class="btn w-25" mat-button matStepperPrevious>Back</button>
-        <button  class="btn w-25" mat-raised-button color="accent" (click)="submitForm(stepper)">
-          Submit
+      <mat-checkbox formControlName="notify">Notify via SMS</mat-checkbox>
+
+      <div class="step-actions">
+        <button mat-button matStepperPrevious>Back</button>
+        <button
+          mat-raised-button
+          color="accent"
+          (click)="submitForm(stepper)"
+          [disabled]="!formsAreValid()"
+        >
+          Submit Registration
         </button>
       </div>
     </form>
