@@ -133,67 +133,68 @@ export class RegistrationComponent {
       }
     }
   }
-  onAadhaarFileChange(event: any): void {
-    const file = event.target.files[0];
-    if (file) {
-      // Basic file type and size validation (optional)
-      const allowedTypes = ['image/jpeg', 'image/png', 'application/pdf'];
-      if (!allowedTypes.includes(file.type)) {
-        this.snackBar.open(
-          'Invalid file type for Aadhaar. Allowed: JPG, PNG, PDF',
-          'Close',
-          {
-            duration: 3000,
-          }
-        );
-        this.aadhaarForm.get('aadhaar_file')?.setValue(null);
-        return;
-      }
-      if (file.size > 5 * 1024 * 1024) {
-        this.snackBar.open('Aadhaar file size must be under 5MB', 'Close', {
-          duration: 3000,
-        });
-        this.aadhaarForm.get('aadhaar_file')?.setValue(null);
-        return;
-      }
-
-      this.aadhaarForm.get('aadhaar_file')?.setValue(file);
-
-      // Simulate OCR result (replace with real API call if available)
-      setTimeout(() => {
-        const fakeOcrData = {
-          first_name: 'Srikanth',
-          middle_name: 'K',
-          last_name: 'Yaswada',
-          dob: new Date(1990, 4, 19), // 19 May 1990
-          gender: 'Male',
-          aadhaar_number: this.aadhaarForm.get('aadhaar_number')?.value || '',
-          nationality: 'Indian',
-        };
-
-        // Patch the personalInfoForm with OCR data
-        this.personalInfoForm.patchValue({
-          first_name: fakeOcrData.first_name,
-          middle_name: fakeOcrData.middle_name,
-          last_name: fakeOcrData.last_name,
-          dob: fakeOcrData.dob,
-          gender: fakeOcrData.gender,
-          nationality: fakeOcrData.nationality,
-        });
-
-        // Optionally auto-fill Aadhaar number if empty
-        if (!this.aadhaarForm.get('aadhaar_number')?.value) {
-          this.aadhaarForm.patchValue({
-            aadhaar_number: fakeOcrData.aadhaar_number,
-          });
-        }
-
-        this.snackBar.open('Aadhaar OCR data auto-filled', 'Close', {
-          duration: 2000,
-        });
-      }, 1500); // simulate delay
+onAadhaarFileChange(event: any): void {
+  const file = event.target.files[0];
+  if (file) {
+    const allowedTypes = ['image/jpeg', 'image/png', 'application/pdf'];
+    if (!allowedTypes.includes(file.type)) {
+      this.snackBar.open(
+        'Invalid file type for Aadhaar. Allowed: JPG, PNG, PDF',
+        'Close',
+        { duration: 3000 }
+      );
+      this.aadhaarForm.get('aadhaar_file')?.setValue(null);
+      return;
     }
+    if (file.size > 5 * 1024 * 1024) {
+      this.snackBar.open('Aadhaar file size must be under 5MB', 'Close', {
+        duration: 3000,
+      });
+      this.aadhaarForm.get('aadhaar_file')?.setValue(null);
+      return;
+    }
+
+    this.aadhaarForm.get('aadhaar_file')?.setValue(file);
+
+    // 🔴 Clear previously auto-filled personal info
+    this.personalInfoForm.reset();
+
+    // Simulate OCR result (replace with real API call)
+    setTimeout(() => {
+      const fakeOcrData = {
+        first_name: 'Srikanth',
+        middle_name: 'K',
+        last_name: 'Yaswada',
+        dob: new Date(1990, 4, 19),
+        gender: 'Male',
+        aadhaar_number: this.aadhaarForm.get('aadhaar_number')?.value || '',
+        nationality: 'Indian',
+      };
+
+      // Patch the personalInfoForm with OCR data
+      this.personalInfoForm.patchValue({
+        first_name: fakeOcrData.first_name,
+        middle_name: fakeOcrData.middle_name,
+        last_name: fakeOcrData.last_name,
+        dob: fakeOcrData.dob,
+        gender: fakeOcrData.gender,
+        nationality: fakeOcrData.nationality,
+      });
+
+      // Optionally auto-fill Aadhaar number
+      if (!this.aadhaarForm.get('aadhaar_number')?.value) {
+        this.aadhaarForm.patchValue({
+          aadhaar_number: fakeOcrData.aadhaar_number,
+        });
+      }
+
+      this.snackBar.open('Aadhaar OCR data auto-filled', 'Close', {
+        duration: 2000,
+      });
+    }, 1500);
   }
+}
+
 
   submitForm(stepper: any): void {
     if (this.formsAreValid()) {
